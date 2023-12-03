@@ -2,13 +2,12 @@
 {
     public class Song
     {
-        public required int ID { get; set; }
-        public required string Name { get; set; }
-        public required string Artist { get; set; }
-        public required string Format { get; set; }
+        public required int SongId { get; set; }
+        public required int ArtistId { get; set; }
+        public required int GenreId { get; set; }
+        public required string Title { get; set; }
         public required string Type { get; set; }
-        public required string Genre { get; set; }
+        public required string Format { get; set; }
         public required int Price { get; set; }
-
     }
 }
