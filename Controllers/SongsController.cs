@@ -22,9 +22,8 @@ namespace MusicShop.Controllers
         // GET: Songs
         public async Task<IActionResult> Index()
         {
-              return _context.Song != null ? 
-                          View(await _context.Song.ToListAsync()) :
-                          Problem("Entity set 'MusicShopContext.Song'  is null.");
+            var musicShopContext = _context.Song.Include(s => s.Artist).Include(s => s.Genre);
+            return View(await musicShopContext.ToListAsync());
         }
 
         // GET: Songs/Details/5
@@ -36,7 +35,9 @@ namespace MusicShop.Controllers
             }
 
             var song = await _context.Song
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .Include(s => s.Artist)
+                .Include(s => s.Genre)
+                .FirstOrDefaultAsync(m => m.SongId == id);
             if (song == null)
             {
                 return NotFound();
@@ -48,6 +49,8 @@ namespace MusicShop.Controllers
         // GET: Songs/Create
         public IActionResult Create()
         {
+            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName");
+            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
             return View();
         }
 
@@ -56,7 +59,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Artist,Format,Type,Genre,Price")] Song song)
+        public async Task<IActionResult> Create([Bind("SongId,ArtistId,GenreId,Title,Type,Format,Price")] Song song)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +67,8 @@ namespace MusicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName", song.ArtistId);
+            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", song.GenreId);
             return View(song);
         }
 
@@ -80,6 +85,8 @@ namespace MusicShop.Controllers
             {
                 return NotFound();
             }
+            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName", song.ArtistId);
+            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", song.GenreId);
             return View(song);
         }
 
@@ -88,9 +95,9 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Artist,Format,Type,Genre,Price")] Song song)
+        public async Task<IActionResult> Edit(int id, [Bind("SongId,ArtistId,GenreId,Title,Type,Format,Price")] Song song)
         {
-            if (id != song.ID)
+            if (id != song.SongId)
             {
                 return NotFound();
             }
@@ -104,7 +111,7 @@ namespace MusicShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SongExists(song.ID))
+                    if (!SongExists(song.SongId))
                     {
                         return NotFound();
                     }
@@ -115,6 +122,8 @@ namespace MusicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName", song.ArtistId);
+            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", song.GenreId);
             return View(song);
         }
 
@@ -127,7 +136,9 @@ namespace MusicShop.Controllers
             }
 
             var song = await _context.Song
-                .FirstOrDefaultAsync(m => m.ID == id);
+                .Include(s => s.Artist)
+                .Include(s => s.Genre)
+                .FirstOrDefaultAsync(m => m.SongId == id);
             if (song == null)
             {
                 return NotFound();
@@ -157,7 +168,7 @@ namespace MusicShop.Controllers
 
         private bool SongExists(int id)
         {
-          return (_context.Song?.Any(e => e.ID == id)).GetValueOrDefault();
+          return (_context.Song?.Any(e => e.SongId == id)).GetValueOrDefault();
         }
     }
 }

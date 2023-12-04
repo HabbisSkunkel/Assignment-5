@@ -11,7 +11,7 @@ using MusicShop.Data;
 namespace MusicShop.Migrations
 {
     [DbContext(typeof(MusicShopContext))]
-    [Migration("20231201202534_InitialCreate")]
+    [Migration("20231203222429_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,36 +26,34 @@ namespace MusicShop.Migrations
 
             modelBuilder.Entity("MusicShop.Models.Song", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("SongId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SongId"));
 
-                    b.Property<string>("Artist")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Format")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("GenreId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
+                    b.HasKey("SongId");
 
                     b.ToTable("Song");
                 });

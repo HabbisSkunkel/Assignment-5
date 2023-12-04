@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicShop.Data;
 
@@ -10,9 +11,11 @@ using MusicShop.Data;
 namespace MusicShop.Migrations
 {
     [DbContext(typeof(MusicShopContext))]
-    partial class MusicShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231203230323_Foreign")]
+    partial class Foreign
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,8 +75,6 @@ namespace MusicShop.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("CartId");
-
                     b.ToTable("OnlineUser");
                 });
 
@@ -85,8 +86,9 @@ namespace MusicShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
 
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
+                    b.Property<string>("CartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
@@ -95,8 +97,6 @@ namespace MusicShop.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("RecordId");
-
-                    b.HasIndex("SongId");
 
                     b.ToTable("ShoppingCart");
                 });
@@ -137,28 +137,6 @@ namespace MusicShop.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Song");
-                });
-
-            modelBuilder.Entity("MusicShop.Models.OnlineUser", b =>
-                {
-                    b.HasOne("MusicShop.Models.ShoppingCart", "ShoppingCart")
-                        .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShoppingCart");
-                });
-
-            modelBuilder.Entity("MusicShop.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("MusicShop.Models.Song", "Song")
-                        .WithMany()
-                        .HasForeignKey("SongId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Song");
                 });
 
             modelBuilder.Entity("MusicShop.Models.Song", b =>

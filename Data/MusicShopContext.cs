@@ -15,5 +15,13 @@ namespace MusicShop.Data
         }
 
         public DbSet<MusicShop.Models.Song> Song { get; set; } = default!;
+
+        public DbSet<MusicShop.Models.Artist> Artist { get; set; } = default!;
+
+        public DbSet<MusicShop.Models.Genre> Genre { get; set; } = default!;
+
+        public DbSet<MusicShop.Models.ShoppingCart> ShoppingCart { get; set; } = default!;
+
+        public DbSet<MusicShop.Models.OnlineUser> OnlineUser { get; set; } = default!;
     }
 }
