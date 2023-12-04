@@ -9,5 +9,6 @@ namespace MusicShop.Models
         public required int UserId { get; set; }
         public required int CartId { get; set; }
         public required string UserName { get; set; }
+        public required string Password { get; set; }
     }
 }
