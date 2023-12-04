@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MusicShop.Models.OnlineUser>
 
 @{
-    ViewData["Title"] = "Admin - OnlineUsers";
+    ViewData["Title"] = "Admin - OnlineUser";
 }
 
 <h1>OnlineUsers</h1>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ShoppingCart)
+                @Html.DisplayNameFor(model => model.CartId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ShoppingCart.RecordId)
+                @Html.DisplayFor(modelItem => item.CartId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)

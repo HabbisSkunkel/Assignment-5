@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="RecordId" />
             <div class="form-group">
                 <label asp-for="CartId" class="control-label"></label>
-                <input asp-for="CartId" class="form-control" />
+                <select asp-for="CartId" class="form-control" asp-items="ViewBag.CartId"></select>
                 <span asp-validation-for="CartId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,6 +39,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

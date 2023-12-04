@@ -7,7 +7,12 @@ namespace MusicShop.Models
     {
         [Key]
         public required int RecordId { get; set; }
+
+        [Display(Name = "Cart")]
         public required int CartId { get; set; }
+
+        [ForeignKey("CartId")]
+        public virtual OnlineUser? OnlineUser { get; set; }
 
         [Display(Name = "Song")]
         public required int SongId { get; set; }

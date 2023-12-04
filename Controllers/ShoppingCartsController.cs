@@ -22,7 +22,7 @@ namespace MusicShop.Controllers
         // GET: ShoppingCarts
         public async Task<IActionResult> Index()
         {
-            var musicShopContext = _context.ShoppingCart.Include(s => s.Song);
+            var musicShopContext = _context.ShoppingCart.Include(s => s.OnlineUser).Include(s => s.Song);
             return View(await musicShopContext.ToListAsync());
         }
 
@@ -35,6 +35,7 @@ namespace MusicShop.Controllers
             }
 
             var shoppingCart = await _context.ShoppingCart
+                .Include(s => s.OnlineUser)
                 .Include(s => s.Song)
                 .FirstOrDefaultAsync(m => m.RecordId == id);
             if (shoppingCart == null)
@@ -48,7 +49,8 @@ namespace MusicShop.Controllers
         // GET: ShoppingCarts/Create
         public IActionResult Create()
         {
-            ViewData["SongId"] = new SelectList(_context.Song, "SongId", "SongId");
+            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName");
+            ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title");
             return View();
         }
 
@@ -65,6 +67,7 @@ namespace MusicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -82,6 +85,7 @@ namespace MusicShop.Controllers
             {
                 return NotFound();
             }
+            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -118,6 +122,7 @@ namespace MusicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -131,6 +136,7 @@ namespace MusicShop.Controllers
             }
 
             var shoppingCart = await _context.ShoppingCart
+                .Include(s => s.OnlineUser)
                 .Include(s => s.Song)
                 .FirstOrDefaultAsync(m => m.RecordId == id);
             if (shoppingCart == null)

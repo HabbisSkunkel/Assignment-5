@@ -22,8 +22,9 @@ namespace MusicShop.Controllers
         // GET: OnlineUsers
         public async Task<IActionResult> Index()
         {
-            var musicShopContext = _context.OnlineUser.Include(o => o.ShoppingCart);
-            return View(await musicShopContext.ToListAsync());
+              return _context.OnlineUser != null ? 
+                          View(await _context.OnlineUser.ToListAsync()) :
+                          Problem("Entity set 'MusicShopContext.OnlineUser'  is null.");
         }
 
         // GET: OnlineUsers/Details/5
@@ -35,7 +36,6 @@ namespace MusicShop.Controllers
             }
 
             var onlineUser = await _context.OnlineUser
-                .Include(o => o.ShoppingCart)
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (onlineUser == null)
             {
@@ -48,7 +48,6 @@ namespace MusicShop.Controllers
         // GET: OnlineUsers/Create
         public IActionResult Create()
         {
-            ViewData["CartId"] = new SelectList(_context.ShoppingCart, "RecordId", "RecordId");
             return View();
         }
 
@@ -65,7 +64,6 @@ namespace MusicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.ShoppingCart, "RecordId", "RecordId", onlineUser.CartId);
             return View(onlineUser);
         }
 
@@ -82,7 +80,6 @@ namespace MusicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["CartId"] = new SelectList(_context.ShoppingCart, "RecordId", "RecordId", onlineUser.CartId);
             return View(onlineUser);
         }
 
@@ -118,7 +115,6 @@ namespace MusicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.ShoppingCart, "RecordId", "RecordId", onlineUser.CartId);
             return View(onlineUser);
         }
 
@@ -131,7 +127,6 @@ namespace MusicShop.Controllers
             }
 
             var onlineUser = await _context.OnlineUser
-                .Include(o => o.ShoppingCart)
                 .FirstOrDefaultAsync(m => m.UserId == id);
             if (onlineUser == null)
             {
