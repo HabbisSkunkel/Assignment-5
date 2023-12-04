@@ -22,6 +22,7 @@ namespace MusicShop.Models
         public required string Title { get; set; }
         public required string Type { get; set; }
         public required string Format { get; set; }
-        public required int Price { get; set; }
+        [Range(0, 100)]
+        public required decimal Price { get; set; }
     }
 }

@@ -30,12 +30,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
+                <select asp-for="Type" class="form-control">
+                    <option value="Vocal">Vocal</option>
+                    <option value="Instrumental">Instrumental</option>
+                </select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Format" class="control-label"></label>
-                <input asp-for="Format" class="form-control" />
+                <select asp-for="Format" class="form-control">
+                    <option value="Physical">Physical</option>
+                    <option value="Digital">Digital</option>
+                </select>
                 <span asp-validation-for="Format" class="text-danger"></span>
             </div>
             <div class="form-group">
