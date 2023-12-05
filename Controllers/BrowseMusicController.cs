@@ -22,6 +22,8 @@ namespace MusicShop.Controllers
             if (userType != null)
             {
                 ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
+                ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName");
+                ViewData["SongList"] = new MultiSelectList(_context.Song, "SongId", "Title");
                 return View();
             }
             else
