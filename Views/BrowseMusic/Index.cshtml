@@ -6,19 +6,17 @@
 
 <p>Browse Music here broskis:</p>
 
-<form>
-    <fieldset>
-
-        Select Genre
-
-        Dropdown here
-
-        <p>
-
-            <input type="submit" value="Submit" />
-
-        </p>
-
-    </fieldset>
-</form>
+<div class="row">
+    <div class="col-md-4">
+        <form>
+                <div class="form-group">
+                    <label class="control-label"></label>
+                    <select class="form-control" asp-items="ViewBag.GenreID"></select>
+                </div>
+                <p>
+                    <input type="submit" value="Submit" />
+                </p>
+        </form>
+    </div>
+</div>
 
