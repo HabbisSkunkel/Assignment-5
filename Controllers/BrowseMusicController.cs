@@ -16,10 +16,19 @@ namespace MusicShop.Controllers
         }
         public IActionResult Index()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
-            return View();
+            // Check if user is logged in
+            HttpContext.Request.Cookies.TryGetValue("UserType", out string? userType);
+
+            if (userType != null)
+            {
+                ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
+                return View();
+            }
+            else
+            {
+                // redirect to login
+                return RedirectToAction("Index", "Logon");
+            }
         }
-
-
     }
 }

@@ -2,6 +2,7 @@
 
 namespace MusicShop.Controllers
 {
+    [AdminAuthorizationFilter]
     public class AdminController : Controller
     {
         public IActionResult Index()

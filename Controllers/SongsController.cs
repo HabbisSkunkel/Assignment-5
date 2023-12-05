@@ -10,6 +10,7 @@ using MusicShop.Models;
 
 namespace MusicShop.Controllers
 {
+    [AdminAuthorizationFilter]
     public class SongsController : Controller
     {
         private readonly MusicShopContext _context;

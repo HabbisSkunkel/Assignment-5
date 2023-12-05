@@ -12,8 +12,13 @@ namespace MusicShop.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
+            // Clear cookies
+            HttpContext.Response.Cookies.Delete("CartId");
+            HttpContext.Response.Cookies.Delete("UserType");
+
             return View();
         }
 
@@ -28,10 +33,18 @@ namespace MusicShop.Controllers
                 // Check for admin
                 if(result.UserName =="admin")
                 {
+                    // Store admin type and CartId in cookies
+                    HttpContext.Response.Cookies.Append("UserType", "admin");
+                    HttpContext.Response.Cookies.Append("CartId", result.CartId.ToString());
+
                     return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
+                    // Store user type and CartId in cookies
+                    HttpContext.Response.Cookies.Append("UserType", "user");
+                    HttpContext.Response.Cookies.Append("CartId", result.CartId.ToString());
+
                     return RedirectToAction("Index", "BrowseMusic");
                 }
             }
