@@ -11,8 +11,8 @@ namespace MusicShop
 
             if (userType != "admin")
             {
-                // redirect to login
-                context.Result = new Microsoft.AspNetCore.Mvc.RedirectToActionResult("Index", "Logon", null);
+                // redirect to Unauthorized page
+                context.Result = new Microsoft.AspNetCore.Mvc.RedirectToActionResult("Index", "Unauthorized", null);
             }
         }
     }
