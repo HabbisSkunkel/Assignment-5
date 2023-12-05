@@ -14,16 +14,22 @@ namespace MusicShop.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int genreId)
         {
             // Check if user is logged in
             HttpContext.Request.Cookies.TryGetValue("UserType", out string? userType);
 
             if (userType != null)
             {
-                ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName");
-                ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistName");
-                ViewData["SongList"] = new MultiSelectList(_context.Song, "SongId", "Title");
+                var filteredSongs = _context.Song.Where(s => s.GenreId == genreId);
+                var filteredArtists = from s in filteredSongs
+                                      from a in _context.Artist
+                                      where s.ArtistId == a.ArtistId
+                                      select a;
+
+                ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", genreId);
+                ViewData["ArtistId"] = new SelectList(filteredArtists, "ArtistId", "ArtistName");
+                ViewData["SongList"] = new MultiSelectList(filteredSongs, "SongId", "Title");
                 return View();
             }
             else

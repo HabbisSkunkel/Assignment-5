@@ -4,8 +4,6 @@
 
 <h2>Browse Music</h2>
 
-<p>Browse Music here broskis:</p>
-
 <div class="row">
     <div class="col-md-4">
         <form>
@@ -24,6 +22,8 @@
                 <br />
                 @Html.ListBox("Songs", ViewBag.SongList as MultiSelectList)
             </div>
+
+            <input type="submit" value="Add to Cart" />
         </form>
     </div>
 </div>
