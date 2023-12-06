@@ -35,7 +35,7 @@ namespace MusicShop.Migrations
 
                     b.HasKey("ArtistId");
 
-                    b.ToTable("Artist");
+                    b.ToTable("Artist", (string)null);
                 });
 
             modelBuilder.Entity("MusicShop.Models.Genre", b =>
@@ -52,7 +52,7 @@ namespace MusicShop.Migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genre");
+                    b.ToTable("Genre", (string)null);
                 });
 
             modelBuilder.Entity("MusicShop.Models.OnlineUser", b =>
@@ -73,7 +73,7 @@ namespace MusicShop.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("OnlineUser");
+                    b.ToTable("OnlineUser", (string)null);
                 });
 
             modelBuilder.Entity("MusicShop.Models.ShoppingCart", b =>
@@ -99,7 +99,7 @@ namespace MusicShop.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCart");
+                    b.ToTable("ShoppingCart", (string)null);
                 });
 
             modelBuilder.Entity("MusicShop.Models.Song", b =>
@@ -137,7 +137,7 @@ namespace MusicShop.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Song");
+                    b.ToTable("Song", (string)null);
                 });
 
             modelBuilder.Entity("MusicShop.Models.ShoppingCart", b =>

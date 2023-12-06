@@ -174,8 +174,10 @@ namespace MusicShop.Controllers
 
         public IActionResult AddToCart(int songId)
         {
+            songId = 1;
+
             //try get value from cookie
-            HttpContext.Request.Cookies.TryGetValue("UserId", out string? cartId);
+            HttpContext.Request.Cookies.TryGetValue("CartId", out string? cartId);
 
             if (cartId != null)
             {
@@ -193,7 +195,6 @@ namespace MusicShop.Controllers
                 }
                 else
                 {
-                    songId = 1;
 
                     // Create new cart object
                     _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
