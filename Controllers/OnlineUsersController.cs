@@ -57,7 +57,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,CartId,UserName,Password")] OnlineUser onlineUser)
+        public async Task<IActionResult> Create([Bind("UserId,UserName,Password,UserType")] OnlineUser onlineUser)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,CartId,UserName,Password")] OnlineUser onlineUser)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,UserName,Password,UserType")] OnlineUser onlineUser)
         {
             if (id != onlineUser.UserId)
             {
