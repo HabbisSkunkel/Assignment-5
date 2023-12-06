@@ -179,7 +179,7 @@ namespace MusicShop.Controllers
           return (_context.ShoppingCart?.Any(e => e.RecordId == id)).GetValueOrDefault();
         }
 
-
+        // Takes a list of songs, and add them to the user's cart one at a time.
         public IActionResult AddToCart(List<int> selectedSongs)
         {
             //try get value from cookie
@@ -197,6 +197,7 @@ namespace MusicShop.Controllers
 
                     if (result != null)
                     {
+                        // Exists, so increment count.
                         result.Count++;
                         _context.ShoppingCart.Update(result);
                         _context.SaveChanges();
@@ -210,6 +211,7 @@ namespace MusicShop.Controllers
                 }
             }
 
+            // Show checkout page.
             return RedirectToAction("Index", "Checkout");
         }
     }

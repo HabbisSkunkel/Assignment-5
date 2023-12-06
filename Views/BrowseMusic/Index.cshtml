@@ -103,7 +103,6 @@
                     </tbody>
                 </table>
             <button type="button" onclick="submitSelectedSongs()" class="btn btn-primary">Add to Shopping Cart</button>
-            @* <input type="submit" value="Add to Cart" /> *@
         </form>
     </div>
 </div>
@@ -117,9 +116,7 @@
             selectedSongs.push($(this).data('song-id'));
         });
 
-        // Perform any additional logic or validation if needed
-
-        // Send the selectedSongs array to the server using AJAX
+        // Send the selectedSongs array to the AddToCart method
         $.ajax({
             type: 'POST',
             url: 'ShoppingCarts/AddToCart',

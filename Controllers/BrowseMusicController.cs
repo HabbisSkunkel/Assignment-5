@@ -62,14 +62,7 @@ namespace MusicShop.Controllers
             {
                 // redirect to login
                 return RedirectToAction("Index", "Logon");
-            }
-
-            
-        }
-
-        public IActionResult AddToCart()
-        {
-            return RedirectToAction("AddToCart", "ShoppingCarts", 1);
+            } 
         }
     }
 }

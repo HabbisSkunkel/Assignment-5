@@ -20,6 +20,7 @@ namespace MusicShop.Controllers
 
         public IActionResult Login(string Username, string Password)
         {
+            // Check if user exists
             var result = (from user in _context.OnlineUser
                          where user.UserName == Username && user.Password == Password
                          select user).FirstOrDefault();
