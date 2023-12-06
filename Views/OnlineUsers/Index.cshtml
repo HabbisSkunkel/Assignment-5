@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CartId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
@@ -27,9 +24,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr class="border-secondary">
-            <td>
-                @Html.DisplayFor(modelItem => item.CartId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>

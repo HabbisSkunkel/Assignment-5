@@ -1,10 +1,13 @@
-﻿@{
+﻿@model IEnumerable<MusicShop.Models.Song>
+
+@{
     ViewData["Title"] = "Browse Music";
 }
 
 <h2>Browse Music</h2>
 
 <div class="row">
+    <div>
     <div class="col-md-4">
         <form asp-action="Index">
             <div class="form-group">
@@ -22,16 +25,68 @@
             </div>
                 <input type="submit" value="Filter Songs" class="btn btn-primary" />
             </form>
-            <form>
-
-            <div class="form-group">
-                <label class="control-label">Songs:</label>
-                <br />
-                @Html.ListBox("Songs", ViewBag.SongList as MultiSelectList)
             </div>
+            <form asp-action="AddToCart">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Select
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Format)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Artist)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Genre)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="border-secondary">
+                                <td>
+                                    <input type="checkbox" id="@(Html.DisplayFor(modelItem => item.SongId))" value="test" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Format)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Artist.ArtistName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Genre.GenreName)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
 
             <input type="submit" value="Add to Cart" />
         </form>
     </div>
 </div>
+
 

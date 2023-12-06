@@ -6,12 +6,12 @@ namespace MusicShop.Models
     public class ShoppingCart
     {
         [Key]
-        public required int RecordId { get; set; }
+        public int RecordId { get; set; }
 
-        [Display(Name = "Cart")]
-        public required int CartId { get; set; }
+        [Display(Name = "User")]
+        public required int UserId { get; set; }
 
-        [ForeignKey("CartId")]
+        [ForeignKey("UserId")]
         public virtual OnlineUser? OnlineUser { get; set; }
 
         [Display(Name = "Song")]

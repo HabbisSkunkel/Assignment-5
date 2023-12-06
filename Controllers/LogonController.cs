@@ -32,16 +32,16 @@ namespace MusicShop.Controllers
                     // Store admin type, UserName and CartId in cookies
                     HttpContext.Response.Cookies.Append("UserType", "admin");
                     HttpContext.Response.Cookies.Append("UserName", result.UserName);
-                    HttpContext.Response.Cookies.Append("CartId", result.CartId.ToString());
+                    HttpContext.Response.Cookies.Append("CartId", result.UserId.ToString());
 
                     return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
-                    // Store user type,  Username, and CartId in cookies
+                    // Store user type, Username, and CartId in cookies
                     HttpContext.Response.Cookies.Append("UserType", "user");
                     HttpContext.Response.Cookies.Append("UserName", result.UserName);
-                    HttpContext.Response.Cookies.Append("CartId", result.CartId.ToString());
+                    HttpContext.Response.Cookies.Append("CartId", result.UserId.ToString());
 
                     return RedirectToAction("Index", "BrowseMusic");
                 }

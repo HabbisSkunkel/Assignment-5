@@ -50,7 +50,7 @@ namespace MusicShop.Controllers
         // GET: ShoppingCarts/Create
         public IActionResult Create()
         {
-            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName");
+            ViewData["UserId"] = new SelectList(_context.OnlineUser, "UserId", "UserName");
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title");
             return View();
         }
@@ -68,7 +68,7 @@ namespace MusicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
+            ViewData["UserId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.UserId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -86,7 +86,7 @@ namespace MusicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
+            ViewData["UserId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.UserId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -123,7 +123,7 @@ namespace MusicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.CartId);
+            ViewData["UserId"] = new SelectList(_context.OnlineUser, "UserId", "UserName", shoppingCart.UserId);
             ViewData["SongId"] = new SelectList(_context.Song, "SongId", "Title", shoppingCart.SongId);
             return View(shoppingCart);
         }
@@ -170,6 +170,38 @@ namespace MusicShop.Controllers
         private bool ShoppingCartExists(int id)
         {
           return (_context.ShoppingCart?.Any(e => e.RecordId == id)).GetValueOrDefault();
+        }
+
+        public IActionResult AddToCart(int songId)
+        {
+            //try get value from cookie
+            HttpContext.Request.Cookies.TryGetValue("UserId", out string? cartId);
+
+            if (cartId != null)
+            {
+                // Check if song is already in cart.
+                ShoppingCart? result = (from cart in _context.ShoppingCart
+                                        where cart.UserId == Convert.ToInt32(cartId)
+                                        where cart.SongId == songId
+                                        select cart).FirstOrDefault();
+
+                if (result != null)
+                {
+                    result.Count++;
+                    _context.ShoppingCart.Update(result);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    songId = 1;
+
+                    // Create new cart object
+                    _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
+                    _context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

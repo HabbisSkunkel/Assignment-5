@@ -53,8 +53,10 @@ namespace MusicShop.Controllers
                 }
                 ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", genreId);
                 ViewData["ArtistId"] = new SelectList(filteredArtists, "ArtistId", "ArtistName");
+                //Replace with list
+                var items = new List<int>();
                 ViewData["SongList"] = new MultiSelectList(filteredSongs, "SongId", "Title");
-                return View();
+                return View(filteredSongs);
             }
             else
             {
@@ -63,6 +65,11 @@ namespace MusicShop.Controllers
             }
 
             
+        }
+
+        public IActionResult AddToCart()
+        {
+            return RedirectToAction("AddToCart", "ShoppingCarts", 1);
         }
     }
 }
