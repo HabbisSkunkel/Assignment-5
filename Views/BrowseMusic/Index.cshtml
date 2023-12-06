@@ -9,16 +9,18 @@
         <form asp-action="Index">
             <div class="form-group">
                 <label class="control-label">Genre:</label>
-                <select class="form-control" asp-items="ViewBag.GenreID" name="genreID"></select>
+                <select class="form-control" asp-items="ViewBag.GenreID" name="genreID">
+                    <option value="">All</option>
+                </select>
                 <input type="submit" value="Filter Artists" class="btn btn-primary" />
             </div>
-        <form asp-action="Index">
             <div class="form-group">
                 <label class="control-label">Artist:</label>
-                <select class="form-control" asp-items="ViewBag.ArtistId" name = artistId></select>
+                <select class="form-control" asp-items="ViewBag.ArtistId" name = "artistId">
+                    <option value="">All</option>
+                </select>
             </div>
                 <input type="submit" value="Filter Songs" class="btn btn-primary" />
-            </form>
             </form>
             <form>
 

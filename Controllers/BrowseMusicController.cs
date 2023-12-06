@@ -14,19 +14,43 @@ namespace MusicShop.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(int genreId, int artistId)
+        public IActionResult Index(int? genreId, int? artistId)
         {
             // Check if user is logged in
             HttpContext.Request.Cookies.TryGetValue("UserType", out string? userType);
 
             if (userType != null)
             {
-                var filteredSongs = _context.Song.Where(s => s.GenreId == genreId);
-                var filteredArtists = (from s in filteredSongs
-                                      from a in _context.Artist
-                                      where s.ArtistId == a.ArtistId
-                                      select a).Distinct();
+                IQueryable<Song> filteredSongs;
+                IQueryable<Artist> filteredArtists;
 
+                if (genreId == null && artistId == null) //All songs
+                {
+                    filteredSongs = _context.Song;
+                    filteredArtists = _context.Artist;
+                }
+                else if (genreId != null && artistId == null) //Filter by genre only
+                {
+                    filteredSongs = _context.Song.Where(s => s.GenreId == genreId);
+                    filteredArtists = (from s in filteredSongs
+                                       from a in _context.Artist
+                                       where s.ArtistId == a.ArtistId
+                                       select a).Distinct();
+                }
+                else if (genreId == null && artistId != null) //Filter by artist only
+                {
+                    filteredSongs = _context.Song.Where(s => s.ArtistId == artistId);
+                    filteredArtists = _context.Artist;
+                }
+                else //Filter by genre and artist
+                { 
+                    filteredArtists = (from s in _context.Song
+                                        from a in _context.Artist
+                                        where s.GenreId == genreId
+                                        where s.ArtistId == a.ArtistId
+                                        select a).Distinct();
+                    filteredSongs = _context.Song.Where(s => s.GenreId == genreId && s.ArtistId == artistId);
+                }
                 ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", genreId);
                 ViewData["ArtistId"] = new SelectList(filteredArtists, "ArtistId", "ArtistName");
                 ViewData["SongList"] = new MultiSelectList(filteredSongs, "SongId", "Title");
@@ -37,6 +61,8 @@ namespace MusicShop.Controllers
                 // redirect to login
                 return RedirectToAction("Index", "Logon");
             }
+
+            
         }
     }
 }
