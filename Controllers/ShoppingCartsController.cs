@@ -180,32 +180,33 @@ namespace MusicShop.Controllers
         }
 
 
-        public IActionResult AddToCart(int songId)
+        public IActionResult AddToCart(List<int> selectedSongs)
         {
             //try get value from cookie
             HttpContext.Request.Cookies.TryGetValue("UserId", out string? cartId);
 
             if (cartId != null)
             {
-                // Check if song is already in cart.
-                ShoppingCart? result = (from cart in _context.ShoppingCart
-                                        where cart.UserId == Convert.ToInt32(cartId)
-                                        where cart.SongId == songId
-                                        select cart).FirstOrDefault();
-
-                if (result != null)
+                foreach (int songId in selectedSongs)
                 {
-                    result.Count++;
-                    _context.ShoppingCart.Update(result);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    songId = 1;
+                    // Check if song is already in cart.
+                    ShoppingCart? result = (from cart in _context.ShoppingCart
+                                            where cart.UserId == Convert.ToInt32(cartId)
+                                            where cart.SongId == songId
+                                            select cart).FirstOrDefault();
 
-                    // Create new cart object
-                    _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
-                    _context.SaveChanges();
+                    if (result != null)
+                    {
+                        result.Count++;
+                        _context.ShoppingCart.Update(result);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        // Create new cart object
+                        _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
+                        _context.SaveChanges();
+                    }
                 }
             }
 

@@ -57,6 +57,12 @@
                                 @Html.DisplayNameFor(model => model.Title)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.Artist)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Genre)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Type)
                             </th>
                             <th>
@@ -65,12 +71,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Price)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Artist)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Genre)
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,10 +78,16 @@
                         {
                             <tr class="border-secondary">
                                 <td>
-                                    <input type="checkbox" id="@(Html.DisplayFor(modelItem => item.SongId))" value="test" />
+                                    <input type="checkbox" id="@(Html.DisplayFor(modelItem => item.SongId))" data-song-id="@item.SongId"/>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Artist.ArtistName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Genre.GenreName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Type)
@@ -92,20 +98,42 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Price)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Artist.ArtistName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Genre.GenreName)
-                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-
-            <input type="submit" value="Add to Cart" />
+            <button type="button" onclick="submitSelectedSongs()" class="btn btn-primary">Add to Shopping Cart</button>
+            @* <input type="submit" value="Add to Cart" /> *@
         </form>
     </div>
 </div>
 
+<script>
+    function submitSelectedSongs() {
+        var selectedSongs = [];
+
+        // Find all checked checkboxes and extract the data-song-id attribute
+        $(':checkbox:checked').each(function () {
+            selectedSongs.push($(this).data('song-id'));
+        });
+
+        // Perform any additional logic or validation if needed
+
+        // Send the selectedSongs array to the server using AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'ShoppingCarts/AddToCart',
+            data: { selectedSongs: selectedSongs },
+            traditional: true, // Use traditional serialization for arrays
+            success: function (data) {
+                // Go to Checkout page
+                window.location.href = '/Checkout';
+            },
+            error: function (error) {
+                // Reload the page
+                window.location.href = '/BrowseMusic';
+            }
+        });
+    }
+</script>
 
