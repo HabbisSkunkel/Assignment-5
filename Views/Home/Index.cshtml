@@ -3,32 +3,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Boring old home page</h1>
+    <h1 class="display-4">Welcome to MusicShop.com!</h1>
+    <p>Please @{
+            Context.Request.Cookies.TryGetValue("UserType", out string? userType);
 
-    <form action="/Home/Index" method="get">
-
-        <fieldset>
-            Attempt at a dropdown:
-
-            Select Genre
-            <select id="Genre" name="Genre">
-
-                <option value=""></option>
-
-                <option value="0">Action</option>
-
-                <option value="1">Drama</option>
-
-                <option selected="selected" value="2">Comedy</option>
-
-                <option value="3">Science Fiction</option>
-
-            </select>
-
-            <p><input type="submit" value="Submit" /> </p>
-
-        </fieldset>
-
-    </form>
-
+            if (userType != null)
+            {
+                <a asp-controller="BrowseMusic" asp-action="Index">browse</a>
+            }
+            else
+            {
+                <a asp-controller="Logon" asp-action="Index">login</a> <text>to browse</text>
+            }
+        } 
+        our collection of music!
+        </ p >
 </div>
