@@ -14,7 +14,7 @@ namespace MusicShop.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(int genreId)
+        public IActionResult Index(int genreId, int artistId)
         {
             // Check if user is logged in
             HttpContext.Request.Cookies.TryGetValue("UserType", out string? userType);
@@ -22,10 +22,10 @@ namespace MusicShop.Controllers
             if (userType != null)
             {
                 var filteredSongs = _context.Song.Where(s => s.GenreId == genreId);
-                var filteredArtists = from s in filteredSongs
+                var filteredArtists = (from s in filteredSongs
                                       from a in _context.Artist
                                       where s.ArtistId == a.ArtistId
-                                      select a;
+                                      select a).Distinct();
 
                 ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreName", genreId);
                 ViewData["ArtistId"] = new SelectList(filteredArtists, "ArtistId", "ArtistName");
