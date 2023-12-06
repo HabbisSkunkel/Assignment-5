@@ -10,7 +10,6 @@ using MusicShop.Models;
 
 namespace MusicShop.Controllers
 {
-    [AdminAuthorizationFilter]
     public class ShoppingCartsController : Controller
     {
         private readonly MusicShopContext _context;
@@ -21,6 +20,7 @@ namespace MusicShop.Controllers
         }
 
         // GET: ShoppingCarts
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Index()
         {
             var musicShopContext = _context.ShoppingCart.Include(s => s.OnlineUser).Include(s => s.Song);
@@ -28,6 +28,7 @@ namespace MusicShop.Controllers
         }
 
         // GET: ShoppingCarts/Details/5
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.ShoppingCart == null)
@@ -48,6 +49,7 @@ namespace MusicShop.Controllers
         }
 
         // GET: ShoppingCarts/Create
+        [AdminAuthorizationFilter]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.OnlineUser, "UserId", "UserName");
@@ -60,6 +62,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Create([Bind("RecordId,UserId,SongId,Count")] ShoppingCart shoppingCart)
         {
             if (ModelState.IsValid)
@@ -74,6 +77,7 @@ namespace MusicShop.Controllers
         }
 
         // GET: ShoppingCarts/Edit/5
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.ShoppingCart == null)
@@ -96,6 +100,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Edit(int id, [Bind("RecordId,UserId,SongId,Count")] ShoppingCart shoppingCart)
         {
             if (id != shoppingCart.RecordId)
@@ -129,6 +134,7 @@ namespace MusicShop.Controllers
         }
 
         // GET: ShoppingCarts/Delete/5
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.ShoppingCart == null)
@@ -151,6 +157,7 @@ namespace MusicShop.Controllers
         // POST: ShoppingCarts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AdminAuthorizationFilter]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.ShoppingCart == null)
@@ -172,6 +179,37 @@ namespace MusicShop.Controllers
           return (_context.ShoppingCart?.Any(e => e.RecordId == id)).GetValueOrDefault();
         }
 
-        
+
+        public IActionResult AddToCart(int songId)
+        {
+            //try get value from cookie
+            HttpContext.Request.Cookies.TryGetValue("UserId", out string? cartId);
+
+            if (cartId != null)
+            {
+                // Check if song is already in cart.
+                ShoppingCart? result = (from cart in _context.ShoppingCart
+                                        where cart.UserId == Convert.ToInt32(cartId)
+                                        where cart.SongId == songId
+                                        select cart).FirstOrDefault();
+
+                if (result != null)
+                {
+                    result.Count++;
+                    _context.ShoppingCart.Update(result);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    songId = 1;
+
+                    // Create new cart object
+                    _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
+                    _context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Index", "Checkout");
+        }
     }
 }

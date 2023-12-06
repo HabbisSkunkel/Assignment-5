@@ -26,29 +26,19 @@ namespace MusicShop.Controllers
 
             if (result != null)
             {
-                // Check for admin
-                if(result.UserName =="admin")
-                {
-                    // Store admin type, UserName and CartId in cookies
-                    HttpContext.Response.Cookies.Append("UserType", "admin");
-                    HttpContext.Response.Cookies.Append("UserName", result.UserName);
-                    HttpContext.Response.Cookies.Append("CartId", result.UserId.ToString());
+                // Store Username, UserId, and UserType in cookies
+                HttpContext.Response.Cookies.Append("UserName", result.UserName);
+                HttpContext.Response.Cookies.Append("UserId", result.UserId.ToString());
+                HttpContext.Response.Cookies.Append("UserType", result.UserType);
 
-                    return RedirectToAction("Index", "Admin");
-                }
-                else
-                {
-                    // Store user type, Username, and CartId in cookies
-                    HttpContext.Response.Cookies.Append("UserType", "user");
-                    HttpContext.Response.Cookies.Append("UserName", result.UserName);
-                    HttpContext.Response.Cookies.Append("CartId", result.UserId.ToString());
-
-                    return RedirectToAction("Index", "BrowseMusic");
-                }
+                // Redirect to home page
+                return RedirectToAction("Index", "Home");
             }
-
-            // Not a valid login
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                // Not a valid login - redirect to login page
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

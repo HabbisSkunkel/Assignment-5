@@ -17,7 +17,7 @@ namespace MusicShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            HttpContext.Request.Cookies.TryGetValue("CartId", out string? cartId);
+            HttpContext.Request.Cookies.TryGetValue("UserId", out string? cartId);
             var musicShopContext = _context.ShoppingCart.Include(s => s.OnlineUser).Include(s => s.Song.Artist).Where(s => s.UserId == Convert.ToInt32(cartId)).OrderBy(s => s.Song.Artist.ArtistName).ThenBy(s => s.Song.Title);
             return View(await musicShopContext.ToListAsync());
         }
