@@ -60,7 +60,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecordId,CartId,SongId,Count")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Create([Bind("RecordId,UserId,SongId,Count")] ShoppingCart shoppingCart)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace MusicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecordId,CartId,SongId,Count")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> Edit(int id, [Bind("RecordId,UserId,SongId,Count")] ShoppingCart shoppingCart)
         {
             if (id != shoppingCart.RecordId)
             {
@@ -172,37 +172,6 @@ namespace MusicShop.Controllers
           return (_context.ShoppingCart?.Any(e => e.RecordId == id)).GetValueOrDefault();
         }
 
-        public IActionResult AddToCart(int songId)
-        {
-            songId = 1;
-
-            //try get value from cookie
-            HttpContext.Request.Cookies.TryGetValue("CartId", out string? cartId);
-
-            if (cartId != null)
-            {
-                // Check if song is already in cart.
-                ShoppingCart? result = (from cart in _context.ShoppingCart
-                                        where cart.UserId == Convert.ToInt32(cartId)
-                                        where cart.SongId == songId
-                                        select cart).FirstOrDefault();
-
-                if (result != null)
-                {
-                    result.Count++;
-                    _context.ShoppingCart.Update(result);
-                    _context.SaveChanges();
-                }
-                else
-                {
-
-                    // Create new cart object
-                    _context.ShoppingCart.Add(new ShoppingCart() { UserId = Convert.ToInt32(cartId), Count = 1, SongId = songId });
-                    _context.SaveChanges();
-                }
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
+        
     }
 }
